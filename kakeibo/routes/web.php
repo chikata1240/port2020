@@ -19,6 +19,8 @@ Route::get('/', function () {
     return view('first.login');
 });
 
+Route::post('/', 'KakeiboController@login');
+
 Route::get('/index', function () {
     return view('second.index');
 });
@@ -26,12 +28,6 @@ Route::get('/index', function () {
 Route::post('/index', 'KakeiboController@index');
 
 Route::post('/thanks', 'KakeiboController@thanks');
-
-Route::get('/login', function () {
-    return view('first.login');
-});
-
-Route::post('/login', 'KakeiboController@login');
 
 Route::get('/input/{day}', 'KakeiboController@input');
 
@@ -42,7 +38,5 @@ Route::get('/detail/{ym}', 'KakeiboController@detail');
 Route::get('/delete/{id}', 'KakeiboController@delete');
 
 Route::get('/calendar', 'KakeiboController@calendar');
-
-Route::get('/test', 'KakeiboController@test');
 
 Route::get('/{ym}', 'KakeiboController@calendarappdown');
