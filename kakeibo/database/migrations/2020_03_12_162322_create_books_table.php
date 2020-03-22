@@ -18,8 +18,8 @@ class CreateBooksTable extends Migration
             $table->integer('family_number');
             $table->string('budget');
             $table->integer('money');
-            $table->text('memo');
-            $table->integer('days');
+            $table->text('memo')->nullable();
+            $table->date('days');
             $table->timestamps();
         });
     }
