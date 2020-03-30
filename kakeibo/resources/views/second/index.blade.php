@@ -20,6 +20,9 @@
         @error('name')
           <span class="error">{{$message}}</span>
         @enderror
+        @if (isset($check))
+          <span class="error">{{$check->name}}は登録済みです。</span>
+        @endif
       </dt>
       <dd>
         <input type="text" name="name" value="{{old('name')}}">
@@ -35,6 +38,7 @@
       <dd>
         <input type="password" name="password" value="">
       </dd>
+      
     </dl>
     <div class="entry_submit">
       <input id="submit_buttom" type="submit" value="登録">

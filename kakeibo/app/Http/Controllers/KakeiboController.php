@@ -18,7 +18,7 @@ class KakeiboController extends Controller
     public function index(KakeiboRequest $request)
     {
         // fimily_code,name,passwordの登録情報確認
-        $index = Member::where('family_code', $request->family_code)->where('name', $request->name)->where('password', $request->password)->doesntExist();
+        $index = Member::where('family_code', $request->family_code)->where('name', $request->name)->doesntExist();
         // family_codeの存在確認
         $familycount = Member::where('family_code', $request->family_code)->count();
 
@@ -26,7 +26,7 @@ class KakeiboController extends Controller
         if ($index) {
             return view('second.check', compact('check', 'familycount'));
         } else {
-            return view('second.index');
+            return view('second.index', compact('check'));
         }
     }
 
