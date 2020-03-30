@@ -51,40 +51,8 @@ class KakeiboController extends Controller
             $request->session()->put('family_code', $login->family_code);
             $request->session()->put('name', $login->name);
             $request->session()->put('id', $login->id);
-            $today = new Carbon('today');
-            // 〇〇年〇〇月で表示
-            $todayDay = $today->format('Y年m月');
-            // アクセス時の年月の１日を変数に代入
-            $tempDate = Carbon::createFromDate($today->year, $today->month, 1);
-            // カレンダー左上のズレを代入
-            $skip = $tempDate->dayOfWeek;
-            // $tempDateにカレンダー左上のズレの日数分マイナスする
-            for ($i = 0; $i < $skip; $i++) {
-                $tempDate->subDay();
-            }
-            // カレンダーの日付変更
-            $prevnum = Carbon::createFromDate($today->year, $today->month - 1);
-            $nextnum = Carbon::createFromDate($today->year, $today->month + 1);
-            $prev = $prevnum->format('Y-m');
-            $next = $nextnum->format('Y-m');
 
-            // その月の合計金額
-            // 月(carbon)　＋　family_code(member) + sum
-            $ymtemp = substr($tempDate, 0, 7);
-            $monthsum = Book::whereHas('member', function ($query) use ($login) {
-                $query->where('family_code', $login->family_code);
-            })->where('budget', '支出')->where('days', 'LIKE', $ymtemp . '%')->sum('money');
-            // その月の支出人物の特定
-            $testers = Member::where('family_code', session('family_code'))->pluck('id');
-            foreach ($testers as $tester) {
-                $monthpersonsum[] = Book::whereHas('member', function ($query) {
-                    $query->where('family_code', session('family_code'));
-                })->where('family_number', $tester)->where('budget', '支出')->where('days', 'LIKE', $ymtemp . '%')->sum('money');
-                // 名前の取得
-                $monthperson[] = Member::where('id', $tester)->where('family_code', session('family_code'))->get();
-            }
-            // echo $login;
-            return view('calendar.calendar', compact('todayDay', 'today', 'tempDate', 'prev', 'next', 'monthsum', 'monthpersonsum', 'monthperson'));
+            return redirect('/calendar');
         } else {
             return redirect('/login');
         }
@@ -190,8 +158,8 @@ class KakeiboController extends Controller
                 $tempDate->subDay();
             }
             // 前の月、次の月
-            $prevnum = Carbon::createFromDate($today->year, $today->month - 1);
-            $nextnum = Carbon::createFromDate($today->year, $today->month + 1);
+            $prevnum = Carbon::createFromDate($today->year, $today->month - 1, 1);
+            $nextnum = Carbon::createFromDate($today->year, $today->month + 1, 1);
             $prev = $prevnum->format('Y-m');
             $next = $nextnum->format('Y-m');
 
@@ -210,7 +178,7 @@ class KakeiboController extends Controller
                 // 名前の取得
                 $monthperson[] = Member::where('id', $tester)->where('family_code', session('family_code'))->get();
             }
-
+            // var_dump($next);
             return view('calendar.calendar', compact('todayDay', 'today', 'tempDate', 'prev', 'next', 'monthsum', 'monthpersonsum', 'monthperson'));
         } else {
             return redirect('/login');
@@ -233,8 +201,8 @@ class KakeiboController extends Controller
                 $tempDate->subDay();
             }
             // 前の月、次の月
-            $prevnum = Carbon::createFromDate($today->year, $today->month - 1);
-            $nextnum = Carbon::createFromDate($today->year, $today->month + 1);
+            $prevnum = Carbon::createFromDate($today->year, $today->month - 1, 1);
+            $nextnum = Carbon::createFromDate($today->year, $today->month + 1, 1);
             $prev = $prevnum->format('Y-m');
             $next = $nextnum->format('Y-m');
 
